@@ -1,0 +1,10 @@
+.activeMenu{
+    color:green !important;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 700;
+}
+.inactiveMenu{
+    color:red !important;
+    text-decoration: none;
+}
