@@ -5,20 +5,58 @@ import axios from 'axios';
 
 const Registration = () => {
     const base_url = import.meta.env.VITE_REACT_APP_API_URL;
-
     const [formObjectData,setFormObjectData] = useState({});
+    
+    //form validation
     const {register,handleSubmit,watch,formState:{errors},} = useForm();
+    //form submit
     const onSubmit = async (data) => {
-        console.log(data);
-        /* fetch(`${base_url}/register`, {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: { "Content-Type": "application/json", }
-        }).then(response => {
-            console.log(response.json());
-        }) */
         //console.log(data);
-        //setFormObjectData(data);
+
+        /* api call with async - await [without .then] 
+            let response =  await fetch(`${base_url}/register`, {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: { "Content-Type": "application/json", }
+            });
+            const jsonResponse = await response.json();
+            console.log(jsonResponse);  
+            if(resdata.success == false){
+                console.log(resdata.errors); //
+                console.log(resdata.errors.email);//array - email
+                console.log(resdata.errors.email[0]);//string final result
+            } 
+        */
+        
+        /* api call with .then 
+            fetch(`${base_url}/register`, {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: { "Content-Type": "application/json", }
+            }).then(response => {
+                console.log(response.json());
+            })
+            .then(error => {
+                console.log(error);
+            })
+        */
+            
+        /* axios api call with awit
+            let axiosResponse = await axios.post(`${base_url}/register`, {
+                //can't send dynamic field
+                name:'hasan',
+                email:'ha@gmail.com',
+                password : '123456@',
+                password_confirmation : '123456@',
+            });
+            //if we don't use await
+            //.then((response) => {
+                //console.log(response);
+                //console.log(response.data);
+            //});
+            console.log( axiosResponse.data);
+        */
+        
         //await submitMutation(data);
     };
 
