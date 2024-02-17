@@ -57,7 +57,7 @@ const Registration = () => {
             console.log( axiosResponse.data);
         */
         
-        //await submitMutation(data);
+        await submitMutation(data);
     };
 
     // Mutation
@@ -68,6 +68,8 @@ const Registration = () => {
             headers: { "Content-Type": "application/json", }
         }).then(response => {
             console.log(response.json());
+        }).then(error => {
+            console.log(error);
         })
     });
 
