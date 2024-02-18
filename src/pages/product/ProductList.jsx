@@ -1,52 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const ProductList = () => {
+
     const base_url = import.meta.env.VITE_REACT_APP_API_URL;
     const token = localStorage.getItem('token') ? localStorage.getItem('token') : null;
-    let productLists = [];
-    //const [productList,setProductList] = useState([]);
-
-    const getProducts = fetch(`${base_url}/testproducts`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-        },
-        })
-        .then((res) => res.json())
-        .then((res) => {
-            //console.log('in');
-            //console.log(res.data);
-            return res.data;
-        });
-      // Queries
-    const productList = useQuery({ queryKey: ['products'], queryFn: getProducts })
-    console.log('here');
-    console.log(productList);
-    
-
-    
-        /* try{
-            const response = fetch(base_url+"/testproducts",{
-                headers:{
-                    'Authorization': 'Bearer '+ token,
-                    'Content-Type' : 'application/json'
+    const getProductLists = async () => {
+        try{
+            const fatchProduct =  await fetch(`${base_url}/testproducts`,{
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
                 },
-            }).then(res => res.json())
-            .then(json => {
-                console.log(json)
-                if(json.success == true){
-                    return setProductList(json.data);
-                }
-            } )
-            .then(error => console.log(error));
+            });
+            const products = await fatchProduct.json();
+            if(products.success === true){
+                //console.log(products.data);      
+                return products.data; 
+            }
         }catch(error){
-            console.log(error);
-        }  */    
-    
-    console.log('final');
-    console.log(productList.length);
+            console.log('error- '+ error);
+        }
+    };
+    //getProductLists(); //[when i use state to set data, then its render infinity] its a problem
+
+    //Queries
+    const productList = useQuery({ queryKey: ['products'], queryFn: getProductLists })
+    //console.log(productList);//all useQuery response
+    //console.log(productList.data);//get targeted data
+
     return (
         <div style={{'marginLeft':'200px', 'marginRight':'200px'}}>
             <br/>
@@ -64,9 +47,9 @@ const ProductList = () => {
                 </thead>
                 <tbody>
                 {
-                    productList.length > 0 ?
+                    productList.data?.length > 0 ?
                         (
-                            productList.map( (value,index) => {
+                            productList.data?.map( (value,index) => {
                                 return (<tr key={index}>
                                     <td style={{ 'border':'1px solid gray' }}>{value['name']}</td>
                                     <td style={{ 'border':'1px solid gray' }}>{value['details']}</td>
