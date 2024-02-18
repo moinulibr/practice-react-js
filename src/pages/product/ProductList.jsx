@@ -2,6 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+//when call function from another js file
+//import productApiHandling, { test } from './productApiHandling';
+
 const ProductList = () => {
 
     const base_url = import.meta.env.VITE_REACT_APP_API_URL;
@@ -25,10 +28,21 @@ const ProductList = () => {
     };
     //getProductLists(); //[when i use state to set data, then its render infinity] its a problem
 
+    //if we want to call api from another js file..
+    //const getProductLists = productApiHandling;
+    //console.log(test(4));
+
     //Queries
-    const productList = useQuery({ queryKey: ['products'], queryFn: getProductLists })
+    const {data} = useQuery({ queryKey: ['products'], queryFn: getProductLists })
+    
+    //const productList = useQuery({ queryKey: ['products'], queryFn: getProductLists })
     //console.log(productList);//all useQuery response
     //console.log(productList.data);//get targeted data
+    //productList.data?.length > 0 ?
+    //(
+        //productList.data.map( (value,index) => {
+        //});
+    //):()
 
     return (
         <div style={{'marginLeft':'200px', 'marginRight':'200px'}}>
@@ -47,9 +61,9 @@ const ProductList = () => {
                 </thead>
                 <tbody>
                 {
-                    productList.data?.length > 0 ?
+                    data?.length > 0 ?
                         (
-                            productList.data?.map( (value,index) => {
+                            data?.map( (value,index) => {
                                 return (<tr key={index}>
                                     <td style={{ 'border':'1px solid gray' }}>{value['name']}</td>
                                     <td style={{ 'border':'1px solid gray' }}>{value['details']}</td>

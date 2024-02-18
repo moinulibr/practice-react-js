@@ -13,7 +13,20 @@ import {
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
+
+
+/*import React, { Suspense } from 'react'; 
+    const queryClient = new QueryClient({
+    defaultOptions:{
+      queries:{
+        suspense:true
+      }
+    }
+  })  
+  //when we want to use suspense for loading...
+  <Suspense fallback={<h2>Loading...</h2>}></Suspense>
+*/
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
