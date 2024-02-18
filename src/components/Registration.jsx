@@ -1,32 +1,48 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {useForm } from 'react-hook-form';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 const Registration = () => {
     const base_url = import.meta.env.VITE_REACT_APP_API_URL;
-    const [formObjectData,setFormObjectData] = useState({});
-    
+    //const [formObjectData,setFormObjectData] = useState({});
+    const errorMessage = useRef("");
     //form validation
     const {register,handleSubmit,watch,formState:{errors},} = useForm();
     //form submit
     const onSubmit = async (data) => {
         //console.log(data);
 
-        /* api call with async - await [without .then] 
+        //api call with async - await [without .then] 
             let response =  await fetch(`${base_url}/register`, {
                 method: "POST",
                 body: JSON.stringify(data),
                 headers: { "Content-Type": "application/json", }
             });
             const jsonResponse = await response.json();
-            console.log(jsonResponse);  
-            if(resdata.success == false){
-                console.log(resdata.errors); //
-                console.log(resdata.errors.email);//array - email
-                console.log(resdata.errors.email[0]);//string final result
+            //console.log(jsonResponse);  
+
+            if(jsonResponse.success == true){
+                errorMessage.current.innerHTML = jsonResponse.message + "<h3> Registration successfully</h3>";
+            }
+            if(jsonResponse.success == false){
+                //console.log(jsonResponse.errors); //
+                //console.log(jsonResponse.errors.email);//array - email
+                //console.log(jsonResponse.errors.email[0]);//string final result
+                let html = '<h5>Error messages</h5>';
+                for(let value in jsonResponse.errors){
+                    //console.log(jsonResponse.errors[value]);//array
+                    //console.log(jsonResponse.errors[value][0]);//single string value
+                    html += `
+                    <ul>
+                        <li>${jsonResponse.errors[value][0]}
+                        </li>
+                    </ul>
+                    `;
+                }
+                errorMessage.current.innerHTML = html;
             } 
-        */
+            
         
         /* api call with .then 
             fetch(`${base_url}/register`, {
@@ -57,31 +73,32 @@ const Registration = () => {
             console.log( axiosResponse.data);
         */
         
-        await submitMutation(data);
+        //Mutation
+        //await submitMutation(data);
     };
 
-    // Mutation
-    const { mutateAsync: submitMutation } = useMutation({
-        mutationFn: (data) => fetch(`${base_url}/register`, {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: { "Content-Type": "application/json", }
-        }).then(response => {
-            console.log(response.json());
-        }).then(error => {
-            console.log(error);
-        })
-    });
+    //Mutation
+    /* 
+        const { mutateAsync: submitMutation } = useMutation({
+            mutationFn: (data) => fetch(`${base_url}/register`, {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: { "Content-Type": "application/json", }
+            }).then(response => {
+                console.log(response.json());
+            }).then(error => {
+                console.log(error);
+            })
+        }); 
+    */
 
-
-    
     return (
         <div style={{'marginLeft':'200px', 'marginRight':'200px'}}>
             <br/>
             <h4>Registration</h4>
             
             <hr />
-
+            <div ref={errorMessage} style={{ color:"red" }}></div>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div> 
 					<label htmlFor="name" style={{ marginRight : "90px" }}>Name</label>
