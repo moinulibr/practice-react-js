@@ -37,8 +37,7 @@ const Login = () => {
         .then(json => console.log(json))   
         .then(error => console.log(error));  
         //console.log(localStorage.getItem('token'));
-        document.getElementById('message').innerHTML = "You are Loged in";
-        <Navigate replace to="/" />;
+        return <Navigate to="/" />;
     }
     return (
         <div style={{'marginLeft':'200px', 'marginRight':'200px'}}>

@@ -10,15 +10,44 @@ import Contactus from './components/Contactus';
 import NotFound from './components/NotFound';
 import Logout from './components/Logout';
 import Todo from './components/Todo';
+import PrivateOutlet from './pages/auth/PrivateOutlet';
 
 
 function App() {
   const token = localStorage.getItem('token') ? localStorage.getItem('token') : null; 
+  
   return (
-    <>
     <BrowserRouter>
     <Navbar/>
     <Routes>
+
+        <Route path='/' element={<Home/>} />
+        <Route path='/login' element={<Login/>} />
+
+        <Route path='/*' element={<PrivateOutlet/>} >
+          <Route path='product/list' element={<ProductList/>}/>
+          <Route path='product/add' element={<AddProduct/>}/>
+          
+          <Route path='logout' element={<Logout/>} />
+        </Route>
+        
+        <Route path='/registration' element={<Registration/>} />
+        <Route path='/about-us' element={<Aboutus/>} />
+        <Route path='/contact-us' element={<Contactus/>} />
+        <Route path='/todo' element={<Todo/>} />
+        <Route path='/*' element={<NotFound/>}/>
+    </Routes>
+    </BrowserRouter>
+  )
+}
+
+export default App
+
+
+
+/* 
+<Route path='/*' element={<NotFound/>}/>
+
         <Route path='/' element={<Home/>} />
         
         <Route path='/login' element={<Login/>} />
@@ -34,11 +63,4 @@ function App() {
         
         <Route path='/todo' element={<Todo/>} />
         <Route path='/*' element={<NotFound/>}/>
-    </Routes>
-    </BrowserRouter>
-      
-    </>
-  )
-}
-
-export default App
+*/

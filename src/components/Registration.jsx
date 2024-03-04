@@ -6,7 +6,11 @@ import axios from 'axios';
 const Registration = () => {
     const base_url = import.meta.env.VITE_REACT_APP_API_URL;
     //const [formObjectData,setFormObjectData] = useState({});
+    
     const errorMessage = useRef("");
+    const [successMessage, setSuccessMessage] = useState("");
+    const [errorMessages, setErrorMessages] = useState("");
+
     //form validation
     const {register,handleSubmit,watch,formState:{errors},} = useForm();
     //form submit
@@ -23,9 +27,12 @@ const Registration = () => {
             //console.log(jsonResponse);  
 
             if(jsonResponse.success == true){
-                errorMessage.current.innerHTML = jsonResponse.message + "<h3> Registration successfully</h3>";
+                setSuccessMessage('Registration Successful');
+                //errorMessage.current.innerHTML = jsonResponse.message + "<h3> Registration successfully</h3>";
             }
             if(jsonResponse.success == false){
+                setErrorMessages(jsonResponse.errors);
+                console.log(errorMessages);
                 //console.log(jsonResponse.errors); //
                 //console.log(jsonResponse.errors.email);//array - email
                 //console.log(jsonResponse.errors.email[0]);//string final result
@@ -98,7 +105,12 @@ const Registration = () => {
             <h4>Registration</h4>
             
             <hr />
-            <div ref={errorMessage} style={{ color:"red" }}></div>
+            <div ref={errorMessage} style={{ color:"red" }}>
+                {
+                    successMessage && <h4>{successMessage}</h4>
+                }
+            </div>
+            
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div> 
 					<label htmlFor="name" style={{ marginRight : "90px" }}>Name</label>
